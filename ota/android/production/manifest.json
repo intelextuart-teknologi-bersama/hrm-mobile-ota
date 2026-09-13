@@ -2,12 +2,12 @@
   "platform": "android",
   "channel": "production",
   "runtimeVersion": "android-1.1.0-hermes-rn081",
-  "version": 29,
-  "updateId": "ota-android-production-v29",
-  "createdAt": "2026-08-29T08:45:36Z",
-  "bundleUrl": "https://akwancakra.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v29.zip",
-  "sha256": "c6d8c11c9d962085d572579cf8115b67a745c74fd97dab9729244133b9f95e75",
+  "version": 30,
+  "updateId": "ota-android-production-v30",
+  "createdAt": "2026-09-13T14:46:31Z",
+  "bundleUrl": "https://akwancakra.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v30.zip",
+  "sha256": "d61bb184634c65624b1a82c60c4edd22b89ac513ef3b0790440d865fa63c1969",
   "mandatory": false,
   "disabled": false,
-  "message": "Perbaikan Fitur Cuti"
+  "message": "Bug fix about warnings"
 }
