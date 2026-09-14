@@ -1,236 +1,178 @@
 # HRM Mobile OTA
 
-Repository publik untuk distribusi OTA (Over-The-Air) bundle aplikasi HRM Mobile.
+Repository distribusi Over-The-Air (OTA) untuk HRM Mobile ArsitekHijau. Repository ini menyimpan manifest dan bundle production yang dikonsumsi aplikasi melalui GitHub Pages.
 
-Mendukung **Android** dan **iOS** dengan mekanisme custom OTA via GitHub Pages.
+> Perubahan di bawah `ota/` bersifat production-sensitive. Jangan mengubah manifest atau bundle tanpa memastikan platform, runtime version, version number, URL, dan SHA-256 konsisten.
 
----
+## Integration Branch
 
-## Struktur Directory
+Repository ini saat ini tidak memiliki branch `staging`, sehingga `main` menjadi integration branch aktif.
 
-```
+Workflow kontribusi:
+
+1. Buat task/release branch dari `main`.
+2. Generate atau siapkan artifact pada branch tersebut.
+3. Validasi manifest, runtime, bundle, URL, dan hash.
+4. Push branch.
+5. Buat Pull Request ke `main`.
+6. Jangan commit atau push langsung ke `main`.
+
+Jika `staging` tersedia di masa depan, task branch dan Pull Request harus menggunakan `staging` sebagai integration branch. Lihat `AGENTS.md` untuk aturan lengkap AI-agent workflow.
+
+## Current Production State
+
+Android production manifest saat README ini diperbarui:
+
+- Platform: Android
+- Channel: `production`
+- Runtime: `android-1.1.0-hermes-rn081`
+- OTA version: `30`
+- Update ID: `ota-android-production-v30`
+- Disabled: `false`
+- Mandatory: `false`
+
+Manifest adalah source of truth untuk state OTA terkini; jangan mengandalkan angka versi di README untuk operasi release berikutnya.
+
+## Repository Structure
+
+```text
 ota/
 ├── android/
-│   └── production/          ← OTA untuk Android
+│   └── production/
 │       ├── manifest.json
-│       └── bundles/*.zip
-│
+│       └── bundles/
 └── ios/
-    └── production/          ← OTA untuk iOS
+    └── production/
         ├── manifest.json
-        └── bundles/*.zip
+        └── bundles/
+
+index.html               GitHub Pages entry
+.nojekyll                Pages compatibility
+README.md                human-facing operational guide
+AGENTS.md                AI-agent rules and delivery policy
 ```
 
----
+## GitHub Pages
 
-## GitHub Pages Setup
+Production artifacts are served from GitHub Pages using the `main` branch.
 
-Aktifkan GitHub Pages dari:
-
-- **Source:** `Deploy from a branch`
-- **Branch:** `main`
-- **Folder:** `/ (root)`
-
-URL manifest:
+Typical manifest endpoints:
 
 ```text
 Android: https://akwancakra.github.io/hrm-mobile-ota/ota/android/production/manifest.json
 iOS:     https://akwancakra.github.io/hrm-mobile-ota/ota/ios/production/manifest.json
 ```
 
----
+Because Pages serves from `main`, a merged Pull Request can become production-visible. Review OTA changes accordingly.
 
-## Cara Publish OTA
+## Generating OTA Artifacts
 
-### Prerequisites
+Artifacts are generated from the `hrm-mobile-arsitekhijau` application repository, not manually assembled here.
 
-- OTA repo sudah di-clone di lokal (`hrm-mobile-ota`)
-- GitHub Pages sudah aktif (branch: main, folder: /)
-
-### Publish Sekaligus Android + iOS
-
-Dari direktori mobile app (`hrm-mobile-arsitekhijau`):
+From the mobile application repository:
 
 ```bash
-# Windows
-npm run publish:ota -- -Version 12 -Message "Fix bug approval OTA"
+# PowerShell
+npm run publish:ota -- -Version 31 -Message "Describe the update"
 
-# atau dengan path repo eksplisit
-powershell -ExecutionPolicy Bypass -File scripts/publish-ota.ps1 `
-  -Version 12 `
-  -OtaRepoPath "D:\Codingan\crm-arsitekhijau\hrm-mobile-ota" `
-  -Message "Fix bug approval, tambah pull to refresh"
-```
-
-```bash
-# macOS / Linux / Git Bash
+# Bash
 npm run publish:ota:bash -- \
-  -v 12 \
+  -v 31 \
   -o /path/to/hrm-mobile-ota \
-  -m "Fix bug approval, tambah pull to refresh"
+  -m "Describe the update"
 ```
 
-### Hanya Satu Platform
+Platform-specific publishing is also supported by the mobile repository scripts.
 
-```bash
-# Android only
-npm run publish:ota:bash -- -v 12 -o /path/to/ota-repo --android-only
+The publishing process typically:
 
-# iOS only
-npm run publish:ota:bash -- -v 12 -o /path/to/ota-repo --ios-only
-```
+1. Exports Android/iOS JavaScript bundles.
+2. Packages bundle/assets.
+3. Calculates SHA-256.
+4. Generates platform manifest metadata.
+5. Copies artifacts into `ota/<platform>/production/`.
 
-### Yang Dilakukan Script
+After generation, review the changes in this repository and deliver them through a task/release branch and Pull Request. Do not direct-push generated production artifacts to `main`.
 
-```
-1. expo export:embed --platform android    → index.android.bundle + assets
-2. expo export:embed --platform ios        → main.jsbundle + assets
-3. Zip masing-masing + SHA-256 hash
-4. Generate manifest.json untuk Android
-5. Generate manifest.json untuk iOS
-6. Copy ke folder hrm-mobile-ota/ota/{platform}/production/
-7. Print summary
-```
+## Manifest Format
 
-### Setelah Script Selesai
-
-Commit & push OTA repo secara manual:
-
-```bash
-cd D:\Codingan\crm-arsitekhijau\hrm-mobile-ota
-git add ota/
-git commit -m "publish ota v12 (channel: production)"
-git push origin main
-```
-
-### Changelog & Bundle Size
-
-Setelah publish, edit `manifest.json` untuk menambah changelog (akan muncul di popup update user):
-
-```json
-{
-  "version": 12,
-  "changelog": [
-    "Fix bug overtime force close",
-    "Tambah pull to refresh di detail page",
-    "Perbaiki approval flow line approver"
-  ],
-  "bundleSize": 5432100
-}
-```
-
-Field `changelog` dan `bundleSize` opsional. Jika tidak diisi, popup update akan menampilkan `message` saja.
-
----
-
-## Cara Naik Versi App
-
-### Kapan Perlu Naik Versi App?
-
-| Situasi | Contoh | Update via |
-|---|---|---|
-| Hanya ganti JS/logic | Fix bug, UI baru, fitur JS-only | **OTA aja** |
-| Ganti native code | Plugin baru, SDK upgrade | **APK/IPA baru** + OTA |
-| Ganti Hermes/RN version | RN 0.81 → 0.82 | **APK/IPA baru** + OTA |
-
-### Langkah-langkah
-
-**1. Update `app.json`** di project mobile app:
-
-```json
-{
-  "version": "1.2.1",
-  "android": {
-    "versionCode": 3
-  },
-  "ios": {
-    "buildNumber": "3"
-  }
-}
-```
-
-**2. Update `ota.config.ts`** di mobile app:
-
-```typescript
-const RUNTIME_BASE = "1.2.1-hermes-rn081";
-```
-
-**3. Build APK/IPA baru** → upload ke Play Store / App Store
-
-**4. Publish OTA baru** setelah APK terdistribusi:
-
-```bash
-npm run publish:ota -- -Message "Fitur baru v1.2.1"
-```
-
-### Aturan Penting
-
-- **Runtime version** = `{platform}-{appVersion}-hermes-rn{rnMajor}{rnMinor}`
-- OTA lama **tetap jalan** untuk user yang belum update APK (karena runtime version berbeda, manifest terpisah)
-- Version OTA (angka di manifest) **tidak reset** — terus increment meskipun app version berubah
-- User APK lama dan APK baru dapat OTA dari **channel berbeda** (manifest terpisah per runtime version)
-
----
-
-## Format Manifest
+Example:
 
 ```json
 {
   "platform": "android",
   "channel": "production",
-  "runtimeVersion": "android-1.0.0-hermes-rn081",
-  "version": 12,
-  "updateId": "ota-android-production-v12",
-  "createdAt": "2026-06-07T10:00:00Z",
-  "bundleUrl": "https://akwancakra.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v12.zip",
-  "sha256": "abc123def456...",
+  "runtimeVersion": "android-1.1.0-hermes-rn081",
+  "version": 30,
+  "updateId": "ota-android-production-v30",
+  "createdAt": "2026-09-13T14:46:31Z",
+  "bundleUrl": "https://akwancakra.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v30.zip",
+  "sha256": "<actual-sha256>",
   "mandatory": false,
   "disabled": false,
-  "message": "Fix bug approval, tambah pull to refresh",
-  "changelog": [
-    "Fix bug approval",
-    "Tambah pull to refresh"
-  ],
-  "bundleSize": 5432100
+  "message": "Bug fix description"
 }
 ```
 
-| Field | Wajib | Fungsi |
-|---|---|---|
-| `version` | Ya | Nomor versi OTA (auto-increment, tidak reset saat app version naik) |
-| `runtimeVersion` | Ya | Gating — bundle hanya cocok untuk Hermes/RN version tertentu |
-| `bundleUrl` | Ya | URL download bundle zip |
-| `sha256` | Ya | Verifikasi integritas file download |
-| `platform` | Ya | `android` atau `ios` |
-| `disabled` | Tidak | Kill switch — `true` = semua client skip update |
-| `mandatory` | Tidak | Saat ini belum di-enforce client-side (selalu optional) |
-| `message` | Tidak | Deskripsi update (tampil di popup jika changelog kosong) |
-| `changelog` | Tidak | Array string perubahan (tampil di popup) |
-| `bundleSize` | Tidak | Ukuran bundle dalam bytes (tampil di popup) |
+### Required consistency checks
 
----
+| Field | Validation |
+|---|---|
+| `platform` | Must match destination platform directory |
+| `channel` | Must match intended release channel |
+| `runtimeVersion` | Must match compatible mobile app runtime |
+| `version` | Must represent the intended OTA release |
+| `updateId` | Must correspond to the OTA version/platform/channel |
+| `bundleUrl` | Must point to the intended bundle |
+| `sha256` | Must match the actual bundle bytes |
+| `disabled` | Must be intentional; acts as update kill switch |
+| `mandatory` | Must reflect intended client behavior |
+
+Optional fields such as `message`, `changelog`, and `bundleSize` should accurately describe the generated artifact.
+
+## OTA vs Native Release
+
+| Change | Delivery |
+|---|---|
+| JavaScript/business logic/UI only, compatible runtime | OTA may be appropriate |
+| Native dependency/plugin change | New APK/IPA required |
+| Expo SDK / React Native / Hermes runtime change | New APK/IPA required |
+| Package/bundle identifier or signing change | New native release required |
+
+Do not assume a change is OTA-safe without checking native/runtime impact in the mobile application repository.
+
+## Release Validation
+
+Before opening a Pull Request for production artifacts, verify all applicable items:
+
+- manifest JSON parses successfully;
+- platform is correct;
+- runtime version matches the target mobile runtime;
+- OTA version/update ID are correct;
+- bundle URL resolves to the intended file;
+- SHA-256 matches the actual bundle;
+- `disabled` / `mandatory` values are intentional;
+- changelog/message matches the actual change;
+- no unrelated bundles or manifests were modified/deleted;
+- no source code, credentials, signing material, or environment files are included.
 
 ## Rollback
 
-```bash
-# 1. Kembalikan manifest.json ke versi sebelumnya
-cd D:\Codingan\crm-arsitekhijau\hrm-mobile-ota
-git checkout HEAD~1 -- ota/android/production/manifest.json
-git checkout HEAD~1 -- ota/ios/production/manifest.json
+Rollback is production-impacting and should also go through a task branch and Pull Request.
 
-# 2. Commit & push
-git commit -m "rollback OTA v12 -> v11 (bug di v12)"
-git push origin main
-```
+Typical approach:
 
-**Cara kerja rollback:**
-- Client akan mendownload bundle sesuai version di manifest
-- Jika manifest kembali ke v11, client akan download v11 lagi (SHA-256 berbeda)
-- Prosesnya sama seperti update biasa — download → verify → install → restart
+1. Restore the intended previous manifest/artifact relationship on a rollback branch.
+2. Re-verify runtime/platform/URL/hash.
+3. Commit and push the rollback branch.
+4. Open a Pull Request to the active integration branch (`main` while no `staging` exists).
+5. Merge only after review.
 
-### Kill Switch
+Do not use direct `git push origin main` for rollback under the current repository policy.
 
-Set `disabled: true` di `manifest.json`:
+## Kill Switch
+
+Setting:
 
 ```json
 {
@@ -238,104 +180,56 @@ Set `disabled: true` di `manifest.json`:
 }
 ```
 
-→ Commit → push → **semua client skip update** sampai `disabled` diubah ke `false`.
+causes clients to skip OTA updates according to current app behavior. Treat this as a production incident control and deliver the change through the same reviewed branch/PR flow.
 
-Cocok untuk situasi darurat (bundle bermasalah) tanpa harus rollback penuh.
+## Security
 
----
+This repository must not contain:
 
-## Multi-CDN (Fallback Mirrors)
+- application source code beyond generated/minified OTA artifacts;
+- `.env` files;
+- access tokens or credentials;
+- keystores/signing keys;
+- private keys;
+- cloud/service account credentials.
 
-App mendukung **multiple CDN** dengan urutan prioritas. Jika primary CDN (GitHub Pages) gagal, app akan otomatis coba fallback CDN berikutnya.
+SHA-256 integrity checks, runtime gating, platform guards, and kill-switch behavior are safety controls; do not weaken them without an explicit requirement.
 
-### Menambah Mirror Baru
+## Contribution Workflow
 
-**1. Clone/mirror OTA repo ke CDN lain:**
+Current workflow while `staging` does not exist:
 
 ```bash
-# Contoh: deploy ke Netlify
-git clone https://github.com/akwancakra/hrm-mobile-ota.git
-# Upload folder 'ota/' ke Netlify / Cloudflare Pages / VPS kamu
+git checkout main
+git pull
+git checkout -b release/ota-v31
+# generate/copy and validate artifacts
+git add ota/
+git commit -m "release: prepare OTA v31 artifacts"
+git push origin release/ota-v31
 ```
 
-**2. Update `ota.config.ts`** di mobile app:
+Then open a Pull Request from `release/ota-v31` to `main`.
 
-```typescript
-const FALLBACK_CDNS: string[] = [
-  "https://hrm-ota-mirror.netlify.app",
-  "https://ota.vps-kamu.com",
-];
-```
-
-### Auto-Sync via GitHub Action (Opsional)
-
-Buat `.github/workflows/sync-ota.yml` di repo `hrm-mobile-ota`:
-
-```yaml
-name: Sync OTA to Mirror
-on:
-  push:
-    branches: [main]
-    paths: ["ota/**"]
-jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy to Netlify
-        run: curl -X POST -d {} https://api.netlify.com/build_hooks/TOKEN
-```
-
-### Urutan Prioritas
-
-1. **Primary:** GitHub Pages (`akwancakra.github.io`)
-2. **Fallback 1:** Mirror CDN (jika ada)
-3. **Fallback N:** Mirror berikutnya (jika ada)
-
-App akan coba CDN pertama. Jika gagal (HTTP error / timeout / JSON invalid), fallback ke CDN berikutnya. Jika **semua** gagal, update di-skip dan log error ke console.
-
----
-
-## Keamanan
-
-Repo ini hanya berisi artifact OTA yang aman untuk publik:
-
-- Bundle JavaScript (sudah di-minify, tanpa source code asli)
-- Manifest JSON (metadata update)
-
-**Jangan** simpan source code aplikasi, `.env`, keystore, atau credential di repo ini.
-
-### Safety Mechanisms
-
-| Mekanisme | Fungsi |
-|---|---|
-| **Runtime version gating** | Cegah bundle RN version mismatch |
-| **SHA-256 verification** | Cegah bundle corrupt / MITM |
-| **Platform guard** | Bundle Android hanya untuk Android, iOS hanya untuk iOS |
-| **`disabled` flag** | Instant kill switch |
-| **`__DEV__` guard** | OTA tidak pernah jalan di development mode |
-| **Max 3 versions** | Cegah storage penuh di device |
-| **Silent failure** | Update gagal tidak mengganggu user |
-
----
+If a `staging` branch is created later, branch from `staging` and target the Pull Request to `staging` instead.
 
 ## Troubleshooting
 
-### OTA Tidak Jalan
+### Update not detected
 
-1. Cek `disabled` di manifest → harus `false`
-2. Cek `runtimeVersion` di manifest → harus cocok dengan `ota.config.ts`
-3. Cek `platform` di manifest → harus sesuai device
-4. Cek GitHub Pages → pastikan URL manifest bisa diakses via browser
-5. Cek console log app → `[OTA] Update check failed: ...`
+Check:
 
-### Bundle Gagal Download
+1. `disabled` is not unintentionally `true`.
+2. Runtime matches the installed app runtime.
+3. OTA version is newer than the installed OTA version.
+4. Platform matches the device.
+5. Manifest and bundle URLs are accessible.
+6. Bundle hash matches manifest metadata.
 
-Jika user di region dengan akses lambat ke GitHub Pages:
+### Update causes regression
 
-1. Tambah CDN mirror yang lebih dekat ke region user (lihat **Multi-CDN** di atas)
-2. Atau kecilkan bundle size dengan code splitting
+Prepare a reviewed rollback or kill-switch change through a dedicated branch and Pull Request. Do not directly rewrite `main` history.
 
-### Force Close Setelah Update
+## License
 
-Rollback ke versi sebelumnya (lihat **Rollback** di atas), lalu fix bug di bundle baru.
+Private operational repository — ArsitekHijau.
