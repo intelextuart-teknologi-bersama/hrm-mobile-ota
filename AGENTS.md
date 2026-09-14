@@ -32,13 +32,7 @@ This repository distributes production OTA artifacts for HRM Mobile through GitH
 
 OTA artifacts are generated from the `hrm-mobile-arsitekhijau` application repository using its publishing/export scripts. This repository should normally receive generated artifacts rather than source application changes.
 
-The human-facing README currently documents commands such as:
-
-- `npm run publish:ota`
-- `npm run publish:ota:bash`
-- platform-specific OTA publishing commands
-
-Run those commands from the mobile application repository, not from this artifact repository.
+The human-facing README currently documents commands such as `npm run publish:ota` and `npm run publish:ota:bash`. Run those commands from the mobile application repository, not from this artifact repository.
 
 ## Security and Change Boundaries
 
@@ -57,7 +51,7 @@ The rules in this section override any conflicting Git workflow guidance elsewhe
 1. Read this file and inspect the relevant manifest/bundle state.
 2. Confirm the target platform, runtime version, OTA version, channel, and requested operation.
 3. Check repository status and identify the current branch.
-4. Use the latest `staging` branch as the integration baseline when `staging` exists.
+4. Determine the integration branch before creating the task branch: use `staging` when it exists; otherwise use the repository's primary branch (`main`, or `master` where applicable).
 5. Never overwrite uncommitted work that you did not create.
 
 ## 2. Branch Policy
@@ -66,11 +60,8 @@ The rules in this section override any conflicting Git workflow guidance elsewhe
 - NEVER push directly to `main`, `master`, or `staging`.
 - Create a dedicated task branch before making changes.
 - When `staging` exists, create the task branch from the latest `staging`.
-- Use a clear branch prefix such as:
-  - `feat/<short-description>`
-  - `fix/<short-description>`
-  - `chore/<short-description>`
-  - `release/<ota-description>`
+- When `staging` does not exist, create the task branch from the latest primary branch.
+- Use a clear branch prefix such as `feat/`, `fix/`, `chore/`, or `release/`.
 - Do not force-push, rewrite shared history, delete other developers' branches, or use destructive Git operations unless the user explicitly requests them.
 
 ## 3. Validation Before Delivery
@@ -94,33 +85,25 @@ Do not claim a bundle/hash/runtime check passed unless it was actually verified.
 - Do not push partial, unverified, or known-broken OTA work unless the user explicitly requests a checkpoint branch.
 - Commit only task-related changes.
 - Review staged changes before committing.
-- Use clear Conventional Commit-style messages where practical, for example:
-  - `fix: correct android OTA manifest`
-  - `release: prepare OTA v13 artifacts`
-  - `chore: update agent workflow rules`
+- Use clear Conventional Commit-style messages where practical.
 - Push only the dedicated task branch.
 - Re-check that no secrets or application source files are included before pushing.
 
 ## 5. Pull Request Policy
 
 - A Pull Request is the required delivery mechanism after the task is fully complete.
-- The Pull Request base MUST be `staging`.
-- NEVER open a Pull Request to `main` or `master` for normal task delivery.
-- NEVER bypass the Pull Request by pushing directly to `staging`.
+- If `staging` exists, the Pull Request base MUST be `staging`.
+- If `staging` does not exist, the Pull Request base MUST be the repository's primary branch (`main`, or `master` where applicable).
+- NEVER bypass the Pull Request by pushing directly to `staging`, `main`, or `master`.
 - Create the Pull Request only after implementation/artifact preparation, validation, self-review, commit, and task-branch push are complete.
-- The Pull Request description must include:
-  - target platform(s);
-  - OTA/runtime version;
-  - validation performed, including hash verification when applicable;
-  - rollback/kill-switch considerations;
-  - known risks or limitations.
+- The Pull Request description must include target platform(s), OTA/runtime version, validation performed (including hash verification when applicable), rollback/kill-switch considerations, and known risks or limitations.
 - Do not merge your own Pull Request unless the user explicitly requests the merge.
 
-## 6. If `staging` Does Not Exist
+## 6. Integration Branch Resolution
 
-- Do not create `staging` automatically.
-- Do not substitute `main` or `master` as the Pull Request target.
-- Keep completed work on the dedicated task branch and report that delivery is blocked until a maintainer creates or designates `staging`.
+1. If `staging` exists, branch from `staging` and open the completed task Pull Request to `staging`.
+2. If `staging` does not exist, branch from the primary branch and open the completed task Pull Request to `main` (or `master` only if that is the actual primary branch).
+3. In both cases, direct commits/pushes to the integration branch are forbidden.
 
 ## Definition of Done
 
@@ -134,7 +117,7 @@ A task is considered complete only when all applicable items are true:
 - No secrets, source code, or unrelated changes are included.
 - Changes are committed on a dedicated task branch.
 - The completed task branch is pushed.
-- A Pull Request targeting `staging` is created when `staging` exists.
+- A Pull Request is created to `staging` when `staging` exists; otherwise to the repository's primary branch.
 - The agent has not directly pushed to or committed on `main`, `master`, or `staging`.
 
 ## Response Style
