@@ -2,12 +2,12 @@
   "platform": "ios",
   "channel": "production",
   "runtimeVersion": "ios-1.1.0-hermes-rn081",
-  "version": 30,
-  "updateId": "ota-ios-production-v30",
-  "createdAt": "2026-09-13T14:48:16Z",
-  "bundleUrl": "https://akwancakra.github.io/hrm-mobile-ota/ota/ios/production/bundles/ota-ios-production-v30.zip",
-  "sha256": "1efbeeb60687bf1a655227976d4f79a8c442c1ce9e4803cda2d0499fdbb2cf42",
+  "version": 31,
+  "updateId": "ota-ios-production-v31",
+  "createdAt": "2026-09-17T13:11:34Z",
+  "bundleUrl": "https://akwancakra.github.io/hrm-mobile-ota/ota/ios/production/bundles/ota-ios-production-v31.zip",
+  "sha256": "828b239e80ba933d41f719abf2d457bfe6ee1f53095ff5fdd25656e37723a24c",
   "mandatory": false,
   "disabled": false,
-  "message": "Bug fix about warnings"
+  "message": "Perbaikan SOPs dan Peraturan"
 }
