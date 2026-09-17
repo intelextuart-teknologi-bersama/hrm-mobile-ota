@@ -1,6 +1,6 @@
 # HRM Mobile OTA
 
-Repository distribusi Over-The-Air (OTA) untuk HRM Mobile ArsitekHijau. Repository ini menyimpan manifest dan bundle production yang dikonsumsi aplikasi melalui GitHub Pages.
+Repository distribusi Over-The-Air (OTA) untuk HRM Mobile ArsitekHijau. Repository ini menyimpan manifest dan bundle production yang dikonsumsi aplikasi melalui GitHub Pages
 
 > Perubahan di bawah `ota/` bersifat production-sensitive. Jangan mengubah manifest atau bundle tanpa memastikan platform, runtime version, version number, URL, dan SHA-256 konsisten.
 
