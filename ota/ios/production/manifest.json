@@ -2,12 +2,12 @@
   "platform": "ios",
   "channel": "production",
   "runtimeVersion": "ios-1.1.0-hermes-rn081",
-  "version": 32,
-  "updateId": "ota-ios-production-v32",
-  "createdAt": "2026-09-17T14:48:08Z",
-  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/ios/production/bundles/ota-ios-production-v32.zip",
-  "sha256": "0500c7e737c6a5043dfbdfe8c0b3ef894ee0ee014c19d90a9b8ca4c6aea2f7e1",
+  "version": 33,
+  "updateId": "ota-ios-production-v33",
+  "createdAt": "2026-09-18T01:25:13Z",
+  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/ios/production/bundles/ota-ios-production-v33.zip",
+  "sha256": "0d3af7b38a8c29c9f99036f6405dc41af54a6c68e223612e1c2fbd662aa8f892",
   "mandatory": false,
   "disabled": false,
-  "message": "Perbaikan SOPs dan Peraturan"
+  "message": "Perbaikan URL service"
 }

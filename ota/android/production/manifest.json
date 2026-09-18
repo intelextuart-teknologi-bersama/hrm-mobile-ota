@@ -2,12 +2,12 @@
   "platform": "android",
   "channel": "production",
   "runtimeVersion": "android-1.1.0-hermes-rn081",
-  "version": 32,
-  "updateId": "ota-android-production-v32",
-  "createdAt": "2026-09-17T14:46:26Z",
-  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v32.zip",
-  "sha256": "9c5bafe0fad65d88a2e3d17923e8d837ef2b842c4237cdbdf12e0f2e0638c3d6",
+  "version": 33,
+  "updateId": "ota-android-production-v33",
+  "createdAt": "2026-09-18T01:23:30Z",
+  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v33.zip",
+  "sha256": "8313d81d31fc3b413744010542a4fb37cdb2d183faf9d764c71d70f637be99ac",
   "mandatory": false,
   "disabled": false,
-  "message": "Perbaikan SOPs dan Peraturan"
+  "message": "Perbaikan URL service"
 }
