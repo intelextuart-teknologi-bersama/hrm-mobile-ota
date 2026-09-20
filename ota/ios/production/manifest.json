@@ -2,12 +2,12 @@
   "platform": "ios",
   "channel": "production",
   "runtimeVersion": "ios-1.1.0-hermes-rn081",
-  "version": 33,
-  "updateId": "ota-ios-production-v33",
-  "createdAt": "2026-09-18T01:25:13Z",
-  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/ios/production/bundles/ota-ios-production-v33.zip",
-  "sha256": "0d3af7b38a8c29c9f99036f6405dc41af54a6c68e223612e1c2fbd662aa8f892",
+  "version": 34,
+  "updateId": "ota-ios-production-v34",
+  "createdAt": "2026-09-20T11:02:50Z",
+  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/ios/production/bundles/ota-ios-production-v34.zip",
+  "sha256": "411a2a12a02ac178d37214db65777199cf93cc6ae1673b5dfb001b11887bc938",
   "mandatory": false,
   "disabled": false,
-  "message": "Perbaikan URL service"
+  "message": "Perbaikan mengenai bugs, clock in status dan peringatan"
 }
