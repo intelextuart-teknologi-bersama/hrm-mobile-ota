@@ -2,12 +2,12 @@
   "platform": "android",
   "channel": "production",
   "runtimeVersion": "android-1.1.0-hermes-rn081",
-  "version": 34,
-  "updateId": "ota-android-production-v34",
-  "createdAt": "2026-09-20T11:01:00Z",
-  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v34.zip",
-  "sha256": "c3a2cb7b198e8ae064f64ff0604b69730d64d76de27fd23276625bc8acd47fb7",
+  "version": 35,
+  "updateId": "ota-android-production-v35",
+  "createdAt": "2026-09-24T10:23:00Z",
+  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v35.zip",
+  "sha256": "a85a4d365b0c53e4800947541f7a26ed1dcdefa3b00d4fb4a797ad0003241b94",
   "mandatory": false,
   "disabled": false,
-  "message": "Perbaikan mengenai bugs, clock in status dan peringatan"
+  "message": "Perbaikan deskipris pekerjaan dan perbaikan bug"
 }
