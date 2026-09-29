@@ -2,12 +2,12 @@
   "platform": "android",
   "channel": "production",
   "runtimeVersion": "android-1.1.0-hermes-rn081",
-  "version": 35,
-  "updateId": "ota-android-production-v35",
-  "createdAt": "2026-09-24T10:23:00Z",
-  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v35.zip",
-  "sha256": "a85a4d365b0c53e4800947541f7a26ed1dcdefa3b00d4fb4a797ad0003241b94",
+  "version": 36,
+  "updateId": "ota-android-production-v36",
+  "createdAt": "2026-09-29T09:51:15Z",
+  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v36.zip",
+  "sha256": "ad140817d467a8af00b007b7d3150818631166ef413fc0ac412beb4bcb5d4c1c",
   "mandatory": false,
   "disabled": false,
-  "message": "Perbaikan deskipris pekerjaan dan perbaikan bug"
+  "message": "Perbaikan Fitur Presensi"
 }
