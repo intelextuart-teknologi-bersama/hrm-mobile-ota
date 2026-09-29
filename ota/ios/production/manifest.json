@@ -2,12 +2,12 @@
   "platform": "ios",
   "channel": "production",
   "runtimeVersion": "ios-1.1.0-hermes-rn081",
-  "version": 36,
-  "updateId": "ota-ios-production-v36",
-  "createdAt": "2026-09-29T09:52:31Z",
-  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/ios/production/bundles/ota-ios-production-v36.zip",
-  "sha256": "7b812010ea2eb11c05f02dcb6343a86c4ff938a5a727299044dc57fc73072503",
+  "version": 37,
+  "updateId": "ota-ios-production-v37",
+  "createdAt": "2026-09-29T10:38:07Z",
+  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/ios/production/bundles/ota-ios-production-v37.zip",
+  "sha256": "6afd115e35260d21640cdbbb6342a721475ce7a5ec78889f488020c1598cc11f",
   "mandatory": false,
   "disabled": false,
-  "message": "Perbaikan Fitur Presensi"
+  "message": "Perbaikan GPS Presensi"
 }

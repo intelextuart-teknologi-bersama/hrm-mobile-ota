@@ -2,12 +2,12 @@
   "platform": "android",
   "channel": "production",
   "runtimeVersion": "android-1.1.0-hermes-rn081",
-  "version": 36,
-  "updateId": "ota-android-production-v36",
-  "createdAt": "2026-09-29T09:51:15Z",
-  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v36.zip",
-  "sha256": "ad140817d467a8af00b007b7d3150818631166ef413fc0ac412beb4bcb5d4c1c",
+  "version": 37,
+  "updateId": "ota-android-production-v37",
+  "createdAt": "2026-09-29T10:36:48Z",
+  "bundleUrl": "https://intelextuart-teknologi-bersama.github.io/hrm-mobile-ota/ota/android/production/bundles/ota-android-production-v37.zip",
+  "sha256": "fe4259c624f9280276aa17f5aef34174d529db782b1f08f99c740b9730f75540",
   "mandatory": false,
   "disabled": false,
-  "message": "Perbaikan Fitur Presensi"
+  "message": "Perbaikan GPS Presensi"
 }
